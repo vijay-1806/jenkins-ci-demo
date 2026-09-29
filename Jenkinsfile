@@ -11,11 +11,11 @@ pipeline {
         }
 
         stage('Test') {
-    steps {
-        echo 'Testing application...'
-        sh 'exit 1'
-    }
-}
+            steps {
+                echo 'Testing application...'
+                sh './app.sh'
+            }
+        }
 
         stage('Package') {
             steps {

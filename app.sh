@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo "Hello from my Jenkins CI pipeline!"
-echo "Build successful."
+echo "Hello from Jenkins!"
+echo "This is CI version 2."

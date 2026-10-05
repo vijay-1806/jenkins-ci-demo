@@ -39,9 +39,16 @@ pipeline {
         echo 'Logging into Amazon ECR...'
 
         sh '''
+            export AWS_SHARED_CREDENTIALS_FILE=/tmp/.aws/credentials
+            export AWS_CONFIG_FILE=/tmp/.aws/config
+
+            aws sts get-caller-identity
+
             aws ecr get-login-password --region ap-south-1 | \
-            docker login --username AWS --password-stdin \
-            152439496947.dkr.ecr.ap-south-1.amazonaws.com
+            docker login \
+                --username AWS \
+                --password-stdin \
+                152439496947.dkr.ecr.ap-south-1.amazonaws.com
         '''
 
         sh '''

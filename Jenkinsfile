@@ -1,8 +1,20 @@
 pipeline {
 
-    agent any
+    agent {
+        docker {
+            image 'jenkins-docker-agent:1.0'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
 
     stages {
+
+        stage('Environment Check') {
+            steps {
+                sh 'python3 --version'
+                sh 'docker --version'
+            }
+        }
 
         stage('Checkout') {
             steps {
@@ -13,21 +25,32 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building application...'
-                sh 'chmod +x app.sh'
+
+                sh '''
+                    python3 -m py_compile app.py
+                '''
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Testing application...'
-                sh './app.sh'
+
+                sh '''
+                    python3 -c "import app; print(app.health())"
+                '''
             }
         }
 
         stage('Package') {
             steps {
                 echo 'Creating artifact...'
-                sh 'tar -czf app.tar.gz app.sh'
+
+                sh '''
+                    tar -czf app.tar.gz \
+                    app.py \
+                    requirements.txt
+                '''
 
                 archiveArtifacts \
                     artifacts: 'app.tar.gz', \
@@ -38,11 +61,11 @@ pipeline {
 
     post {
         success {
-            echo 'CI pipeline completed successfully!'
+            echo 'Docker Agent CI completed successfully!'
         }
 
         failure {
-            echo 'CI pipeline failed!'
+            echo 'Pipeline failed!'
         }
     }
 }

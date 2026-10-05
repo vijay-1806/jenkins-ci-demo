@@ -80,12 +80,18 @@ pipeline {
         }
 
         stage('Docker Build') {
-            steps {
-                echo 'Building application Docker image...'
+    steps {
+        echo 'Building application Docker image...'
 
-            sh '''
-                 docker build \
-                -t jenkins-python-demo:${BUILD_NUMBER} .
+        sh '''
+            docker build -t jenkins-python-demo:${BUILD_NUMBER} .
+
+            docker tag \
+              jenkins-python-demo:${BUILD_NUMBER} \
+              152439496947.dkr.ecr.ap-south-1.amazonaws.com/jenkins-python-demo:${BUILD_NUMBER}
+
+            docker push \
+              152439496947.dkr.ecr.ap-south-1.amazonaws.com/jenkins-python-demo:${BUILD_NUMBER}
         '''
     }
 }

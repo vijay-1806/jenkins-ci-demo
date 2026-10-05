@@ -1,7 +1,14 @@
 pipeline {
+
     agent any
 
     stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
 
         stage('Build') {
             steps {
@@ -19,7 +26,7 @@ pipeline {
 
         stage('Package') {
             steps {
-                echo 'Packaging application...'
+                echo 'Creating artifact...'
                 sh 'tar -czf app.tar.gz app.sh'
             }
         }
@@ -27,11 +34,11 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'CI pipeline completed successfully!'
         }
 
         failure {
-            echo 'Pipeline failed!'
+            echo 'CI pipeline failed!'
         }
     }
 }

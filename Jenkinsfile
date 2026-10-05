@@ -6,7 +6,7 @@ pipeline {
         args '''
             -v /var/run/docker.sock:/var/run/docker.sock
             --group-add 986
-            -v /home/ubuntu/.aws:/root/.aws:ro
+            -v /home/ubuntu/.aws:/tmp/.aws:ro
         '''
     }
 }

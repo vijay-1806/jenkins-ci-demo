@@ -55,6 +55,17 @@ pipeline {
                     fingerprint: true
             }
         }
+
+        stage('Docker Build') {
+            steps {
+                echo 'Building application Docker image...'
+
+            sh '''
+                 docker build \
+                -t jenkins-python-demo:${BUILD_NUMBER} .
+        '''
+    }
+}
     }
 
     post {

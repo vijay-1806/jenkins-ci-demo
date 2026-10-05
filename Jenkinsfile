@@ -28,6 +28,10 @@ pipeline {
             steps {
                 echo 'Creating artifact...'
                 sh 'tar -czf app.tar.gz app.sh'
+
+                archiveArtifacts \
+                    artifacts: 'app.tar.gz', \
+                    fingerprint: true
             }
         }
     }

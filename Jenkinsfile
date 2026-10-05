@@ -29,6 +29,30 @@ pipeline {
             }
         }
 
+
+        stage('Push to ECR') {
+    steps {
+        echo 'Logging into Amazon ECR...'
+
+        sh '''
+            aws ecr get-login-password --region ap-south-1 | \
+            docker login --username AWS --password-stdin \
+            152439496947.dkr.ecr.ap-south-1.amazonaws.com
+        '''
+
+        sh '''
+            docker tag \
+                jenkins-python-demo:${BUILD_NUMBER} \
+                152439496947.dkr.ecr.ap-south-1.amazonaws.com/jenkins-python-demo:${BUILD_NUMBER}
+        '''
+
+        sh '''
+            docker push \
+                152439496947.dkr.ecr.ap-south-1.amazonaws.com/jenkins-python-demo:${BUILD_NUMBER}
+        '''
+    }
+}
+        
         stage('Test') {
             steps {
                 echo 'Testing application...'

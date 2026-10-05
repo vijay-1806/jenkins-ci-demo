@@ -21,7 +21,9 @@ pipeline {
                 echo 'Building application...'
 
                 sh '''
-                    python3 -m pip install --break-system-packages -r requirements.txt
+                    python3 -m venv .venv
+                    . .venv/bin/activate
+                    pip install --no-cache-dir -r requirements.txt
                     python3 -m py_compile app.py
                 '''
             }
@@ -32,6 +34,7 @@ pipeline {
                 echo 'Testing application...'
 
                 sh '''
+                    . .venv/bin/activate
                     python3 -c "import app; print(app.health())"
                 '''
             }

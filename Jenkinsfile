@@ -27,6 +27,7 @@ pipeline {
                 echo 'Building application...'
 
                 sh '''
+                    python3 -m pip install --break-system-packages -r requirements.txt
                     python3 -m py_compile app.py
                 '''
             }

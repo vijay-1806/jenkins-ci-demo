@@ -1,11 +1,11 @@
 pipeline {
 
     agent {
-        docker {
-            image 'jenkins-docker-agent:1.0'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
+    docker {
+        image 'jenkins-docker-agent:1.0'
+        args '-v /var/run/docker.sock:/var/run/docker.sock --group-add 986'
     }
+}
 
     stages {
 

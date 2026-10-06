@@ -35,3 +35,7 @@ jobs:
         run: |
           source .venv/bin/activate
           python -c "import app; print(app.health())"
+      
+      - name: Build Docker image
+        run: |
+          docker build -t jenkins-python-demo:${{ github.sha }} .

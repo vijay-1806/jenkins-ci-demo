@@ -39,3 +39,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t jenkins-python-demo:${{ github.sha }} .
+      
+      - name: Check Docker image
+        run: |
+          docker images

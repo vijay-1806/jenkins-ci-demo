@@ -7,6 +7,10 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -35,17 +39,17 @@ jobs:
         run: |
           source .venv/bin/activate
           python -c "import app; print(app.health())"
-          
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::152439496947:role/GitHubActionsECRRole
           aws-region: ap-south-1
-          
+
       - name: Build Docker image
         run: |
           docker build -t jenkins-python-demo:${{ github.sha }} .
-      
+
       - name: Check Docker image
         run: |
           docker images

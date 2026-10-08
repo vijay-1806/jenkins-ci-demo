@@ -47,10 +47,24 @@ jobs:
           role-to-assume: arn:aws:iam::152439496947:role/GitHubActionsECRRole
           aws-region: ap-south-1
 
+      - name: Login to Amazon ECR
+        run: |
+          aws ecr get-login-password --region ap-south-1 | \
+          docker login \
+            --username AWS \
+            --password-stdin 152439496947.dkr.ecr.ap-south-1.amazonaws.com
+
       - name: Build Docker image
         run: |
           docker build -t jenkins-python-demo:${{ github.sha }} .
 
-      - name: Check Docker image
+      - name: Tag Docker image
         run: |
-          docker images
+          docker tag \
+            jenkins-python-demo:${{ github.sha }} \
+            152439496947.dkr.ecr.ap-south-1.amazonaws.com/jenkins-python-demo:${{ github.sha }}
+
+      - name: Push Docker image to ECR
+        run: |
+          docker push \
+            152439496947.dkr.ecr.ap-south-1.amazonaws.com/jenkins-python-demo:${{ github.sha }}
